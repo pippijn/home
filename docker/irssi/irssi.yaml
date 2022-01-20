@@ -1,0 +1,54 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: vps
+  name: irssi-storage
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  namespace: vps
+  name: irssi-pippijn
+  labels:
+    run: irssi-pippijn
+spec:
+  volumes:
+    - name: data
+      persistentVolumeClaim:
+        claimName: irssi-storage
+  containers:
+    - name: irssi
+      image: xinutec/irssi:latest
+      imagePullPolicy: Always
+      ports:
+        - containerPort: 22
+      volumeMounts:
+        - mountPath: /home/irssi
+          name: data
+          subPath: pippijn
+        - mountPath: /etc/ssh_keys
+          name: data
+          subPath: ssh
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: vps
+  name: irssi-pippijn
+spec:
+  type: LoadBalancer
+  selector:
+    run: irssi-pippijn
+  ports:
+    - name: ssh
+      protocol: TCP
+      port: 2222
+      targetPort: 22
