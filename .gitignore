@@ -1,3 +1,4 @@
+# Cache and generated or secret configs.
 /.cache
 /.docker
 /.gnupg
@@ -9,3 +10,11 @@
 /.zshenv
 /.zshrc
 *.swp
+
+# Large data sets not stored in git.
+/Documents
+/Music
+/Pictures
+/backup
+/media
+/tmp
