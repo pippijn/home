@@ -26,7 +26,7 @@ mail:
 certmanager:
   enabled: true
   issuerType: ClusterIssuer
-  issuerName: letsencrypt-staging
+  issuerName: letsencrypt-prod
   apiVersion: cert-manager.io/v1
 
 front:

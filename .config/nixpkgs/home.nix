@@ -52,6 +52,7 @@ let sys = (import <nixpkgs/nixos> {}).config; in
 
     extraConfig = ''
       nnoremap <C-l> :noh<CR><C-l>
+      set viminfo='500,\"800
     '';
   };
 
