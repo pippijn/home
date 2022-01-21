@@ -83,7 +83,7 @@ let sys = (import <nixpkgs/nixos> {}).config; in
 
     oh-my-zsh = {
       enable = true;
-      plugins = [ "git" ];
+      plugins = [ "docker" "git" ];
       theme = "cypher";
     };
   };
