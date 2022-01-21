@@ -26,7 +26,7 @@ let sys = (import <nixpkgs/nixos> {}).config; in
   home.stateVersion = "21.11";
 
   home.sessionVariables = {
-    EDITOR = "vim";
+    EDITOR = "vi";
   };
 
   # Let Home Manager install and manage itself.
@@ -38,7 +38,7 @@ let sys = (import <nixpkgs/nixos> {}).config; in
     matchBlocks = {
       irssi = {
         user = "irssi";
-        hostname = "amun";
+        hostname = "localhost";
         port = 2222;
       };
     };
@@ -64,6 +64,7 @@ let sys = (import <nixpkgs/nixos> {}).config; in
     '';
 
     shellAliases = {
+      gs = "gst";
       ll = "ls -l";
       reb = "sudo nixos-rebuild switch";
       hreb = "home-manager switch";

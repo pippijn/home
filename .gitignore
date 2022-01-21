@@ -1,8 +1,11 @@
 /.cache
 /.docker
 /.gnupg
+/.keychain
 /.lesshst
 /.local
 /.viminfo
 /.zcompdump-*
+/.zshenv
+/.zshrc
 *.swp

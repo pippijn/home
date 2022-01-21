@@ -1,1 +1,1 @@
-/nix/store/r53643w3zik30j6wcr0nshsdkw6hq3b6-home-manager-files/.zshenv
+/nix/store/p0iy94gwn2fwn313jn4hig2fmrf7aj70-home-manager-files/.zshenv
