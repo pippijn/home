@@ -1,5 +1,6 @@
 { config, pkgs, ... }:
 
+let sys = (import <nixpkgs/nixos> {}).config; in
 {
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
@@ -10,6 +11,8 @@
   home.packages = with pkgs; [
     git
     gnupg
+    keychain
+    screen
   ];
 
   # This value determines the Home Manager release that your
@@ -29,12 +32,25 @@
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
-  services.gpg-agent = {
+  programs.ssh = {
     enable = true;
-    defaultCacheTtl = 1800;
-    enableSshSupport = true;
+
+    matchBlocks = {
+      irssi = {
+        user = "irssi";
+        hostname = "amun";
+        port = 2222;
+      };
+    };
   };
-  
+
+  programs.neovim = {
+    enable = true;
+    plugins = with pkgs.vimPlugins; [
+      vim-nix
+    ];
+  };
+
   programs.zsh = {
     enable = true;
     autocd = true;
@@ -43,6 +59,8 @@
     initExtra = ''
       unsetopt beep                   # don't beep, ever
       setopt hist_reduce_blanks       # remove superfluous blanks
+      keychain id_rsa
+      . .keychain/${sys.networking.hostName}-sh
     '';
 
     shellAliases = {
@@ -50,6 +68,7 @@
       reb = "sudo nixos-rebuild switch";
       hreb = "home-manager switch";
       k = "sudo kubectl";
+      vi = "nvim";
     };
 
     history = {
