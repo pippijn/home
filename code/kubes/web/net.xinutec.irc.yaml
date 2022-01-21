@@ -24,6 +24,10 @@ metadata:
     cert-manager.io/cluster-issuer: "letsencrypt-staging"
 spec:
   ingressClassName: nginx
+  tls:
+  - hosts:
+    - irc.xinutec.org
+    secretName: irc-tls
   rules:
   - host: irc.xinutec.org
     http:
