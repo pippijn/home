@@ -1,0 +1,67 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: web
+  labels:
+    name: web
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: web
+  name: httpd-isis
+spec:
+  selector:
+    matchLabels:
+      run: httpd-isis
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        run: httpd-isis
+    spec:
+      containers:
+      - name: httpd-isis
+        image: nginx
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: web
+  name: httpd-isis
+  labels:
+    run: httpd-isis
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+  selector:
+    run: httpd-isis
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: web
+  name: isis-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-staging"
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - isis.xinutec.org
+    secretName: isis-tls
+  rules:
+  - host: isis.xinutec.org
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: httpd-isis
+            port:
+              number:  80

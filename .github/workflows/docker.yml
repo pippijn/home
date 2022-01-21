@@ -21,7 +21,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
-          context: code/docker/ircd
+          context: code/kubes/ircd/inspircd
           push: true
           tags: xinutec/ircd:latest
           cache-from: type=registry,ref=xinutec/ircd:latest
@@ -41,7 +41,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
-          context: code/docker/irssi
+          context: code/kubes/vps/irssi
           push: true
           tags: xinutec/irssi:latest
           cache-from: type=registry,ref=xinutec/irssi:latest

@@ -2,15 +2,15 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: web
+  name: ircd
   labels:
-    name: web
+    name: ircd
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: certbot-forward
-  namespace: web
+  namespace: ircd
 spec:
   type: ExternalName
   externalName: xinutec-validation.barfooze.de
@@ -18,7 +18,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  namespace: web
+  namespace: ircd
   name: irc-ingress
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt-staging"
@@ -26,10 +26,10 @@ spec:
   ingressClassName: nginx
   tls:
   - hosts:
-    - irc.xinutec.org
+    - irc.xinutec.net
     secretName: irc-tls
   rules:
-  - host: irc.xinutec.org
+  - host: irc.xinutec.net
     http:
       paths:
       - path: /.well-known

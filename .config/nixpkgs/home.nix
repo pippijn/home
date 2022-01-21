@@ -49,6 +49,10 @@ let sys = (import <nixpkgs/nixos> {}).config; in
     plugins = with pkgs.vimPlugins; [
       vim-nix
     ];
+
+    extraConfig = ''
+      nnoremap <C-l> :noh<CR><C-l>
+    '';
   };
 
   programs.zsh = {
