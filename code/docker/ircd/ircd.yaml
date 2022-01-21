@@ -1,8 +1,13 @@
 ---
 apiVersion: v1
+kind: Namespace
+metadata:
+  name: ircd
+---
+apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  namespace: services
+  namespace: ircd
   name: ircd-storage
 spec:
   accessModes:
@@ -15,7 +20,7 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-  namespace: services
+  namespace: ircd
   name: inspircd
   labels:
     run: inspircd
@@ -38,7 +43,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: services
+  namespace: ircd
   name: inspircd
 spec:
   type: LoadBalancer

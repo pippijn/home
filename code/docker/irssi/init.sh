@@ -14,7 +14,7 @@ fi
 ln -sf /etc/ssh_keys/* /etc/ssh/
 touch /etc/ssh_keys/.stamp
 
-#su - irssi -c 'screen -DRRd'
+su - irssi -c 'screen -d -m'
 while true; do
   echo "Starting health endpoint"
   # TODO: implement actual health check
