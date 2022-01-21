@@ -1,0 +1,9 @@
+/.cache
+/.docker
+/.gnupg
+/.lesshst
+/.local
+/.ssh
+/.viminfo
+/.zcompdump-*
+*.swp
