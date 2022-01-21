@@ -1,0 +1,25 @@
+---
+name: build
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  inspircd:
+    uses: xinutec/pippijn/.github/workflows/docker.yml@main
+    with:
+      path: code/kubes/ircd/inspircd
+      image: ircd
+    secrets:
+      username: ${{ secrets.DOCKERHUB_USERNAME }}
+      password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+  irssi:
+    uses: xinutec/pippijn/.github/workflows/docker.yml@main
+    with:
+      path: code/kubes/vps/irssi
+      image: irssi
+    secrets:
+      username: ${{ secrets.DOCKERHUB_USERNAME }}
+      password: ${{ secrets.DOCKERHUB_PASSWORD }}
