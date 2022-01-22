@@ -190,7 +190,7 @@ bindkey -m ^[Oc stuff ]  #"}]^f"
 
 startup_message off
 
-screen -t 'irssi' -ln 0 ssh -p 2222 irssi@amun
+screen -t 'irssi' -ln 0 ssh irssi
 screen -t 'top' -ln 1 top
 
 deflogin off
