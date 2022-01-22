@@ -12,28 +12,36 @@ spec:
     requests:
       storage: 5Gi
 ---
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   namespace: ircd
   name: inspircd
-  labels:
-    run: inspircd
 spec:
-  volumes:
-    - name: data
-      persistentVolumeClaim:
-        claimName: ircd-storage
-  containers:
-    - name: ircd
-      image: xinutec/ircd:latest
-      imagePullPolicy: Always
-      ports:
-        - containerPort: 22
-      volumeMounts:
-        - mountPath: /etc/inspircd/conf/secret
-          name: data
-          subPath: secret
+  selector:
+    matchLabels:
+      run: inspircd
+  template:
+    metadata:
+      labels:
+        run: inspircd
+    spec:
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: ircd-storage
+      containers:
+        - name: ircd
+          image: xinutec/ircd:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 6697
+            - containerPort: 7005
+            - containerPort: 7776
+          volumeMounts:
+            - mountPath: /etc/inspircd/conf/secret
+              name: data
+              subPath: secret
 ---
 apiVersion: v1
 kind: Service
@@ -49,6 +57,10 @@ spec:
       protocol: TCP
       port: 6697
       targetPort: 6697
+    - name: clients-old
+      protocol: TCP
+      port: 7776
+      targetPort: 7776
     - name: servers
       protocol: TCP
       port: 7005

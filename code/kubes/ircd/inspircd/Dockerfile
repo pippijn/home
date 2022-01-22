@@ -1,16 +1,21 @@
 FROM debian:bullseye-slim
 
+ENV VERSION=3.12.0
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
  ca-certificates \
  git \
- inspircd \
  openssl \
+ wget \
+ && wget "https://github.com/inspircd/inspircd/releases/download/v$VERSION/inspircd_$VERSION.deb11u1_amd64.deb" \
+ && apt-get install -y --no-install-recommends "./inspircd_$VERSION.deb11u1_amd64.deb" \
+ && rm "inspircd_$VERSION.deb11u1_amd64.deb" \
  && apt-get clean
 
 # Root actions: create pid file (even though we know the pid is always going
 # to be 1).
 RUN touch /var/run/inspircd.pid \
- && chown irc:irc /var/run/inspircd.pid \
+ && chown irc:irc /etc/inspircd /var/run/inspircd.pid \
  && rm -rf /etc/inspircd/*
 
 # User actions: set up git remote for config pushes and generate dhparams
