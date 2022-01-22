@@ -7,7 +7,7 @@ hostnames:
 
 initialAccount:
   domain: xinutec.org
-  password: XXX # XXX: Set when using this file.
+  #password: XXX # XXX: Set when using this file.
   username: mailadmin
 
 # default log level. can be overridden globally or per service
@@ -38,9 +38,13 @@ front:
     type: LoadBalancer
     externalTrafficPolicy: Local
 
+    # Don't expose pop3 externally at all.
+    pop3:
+      pop3s: false
+
 persistence:
   size: 100Gi
   storageClass: local-path
 
 # The secret key is required for protecting authentication cookies and must be set individually for each deployment
-secretKey: XXX # XXX: Set when using this file.
+#secretKey: XXX # XXX: Set when using this file.
