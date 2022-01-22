@@ -53,6 +53,8 @@ metadata:
   name: inspircd
 spec:
   type: LoadBalancer
+  # Ensure that the ircd gets the actual client IP, not the load balancer IP.
+  externalTrafficPolicy: Local
   selector:
     run: inspircd
   ports:
