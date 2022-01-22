@@ -12,8 +12,8 @@ config_pull() {
   git rev-parse HEAD > /tmp/inspircd.hash
 
   while true; do
-    # Every 10 minutes.
-    sleep 600
+    # Every 5 minutes.
+    sleep 300
 
     echo "$(date) Checking for new configs"
     git pull
@@ -21,7 +21,7 @@ config_pull() {
     git rev-parse HEAD > /tmp/inspircd.hash.new
     diff /tmp/inspircd.hash.new /tmp/inspircd.hash || {
       mv /tmp/inspircd.hash.new /tmp/inspircd.hash
-      /usr/sbin/inspircd rehash
+      kill -HUP $(cat /var/run/inspircd.pid)
     }
   done
 }
