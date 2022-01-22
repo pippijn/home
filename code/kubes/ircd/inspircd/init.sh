@@ -2,9 +2,11 @@
 
 # The first time, the secrets need to be copied into the container. After
 # that, these are persisted while the shared configs are not.
-while [ ! -f conf/secret/server.conf ]; do
-  echo "[$(date)] Waiting for conf/secret/server.conf..."
-  sleep 30
+for file in conf/secret/server.conf data/permchannels.conf; do
+  while [ ! -f "$file" ]; do
+    echo "[$(date)] Waiting for $file..."
+    sleep 30
+  done
 done
 
 config_pull() {
@@ -15,7 +17,7 @@ config_pull() {
     # Every 5 minutes.
     sleep 300
 
-    echo "$(date) Checking for new configs"
+    echo "[$(date)] Checking for new configs"
     git pull
     # Check whether anything changed.
     git rev-parse HEAD > /tmp/inspircd.hash.new
