@@ -51,7 +51,7 @@ metadata:
   namespace: vps
   name: irssi-pippijn
 spec:
-  type: LoadBalancer
+  type: NodePort
   selector:
     run: irssi-pippijn
   ports:
