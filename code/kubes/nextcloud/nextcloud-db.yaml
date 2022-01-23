@@ -1,3 +1,4 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -33,7 +34,7 @@ spec:
       volumes:
       - name: db-storage
         persistentVolumeClaim:
-          claimName: nextcloud-shared-storage-claim
+          claimName: nextcloud-storage
 ---
 apiVersion: v1
 kind: Service
