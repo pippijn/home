@@ -5,17 +5,17 @@ metadata:
   namespace: nextcloud
   name: nextcloud-ingress
   annotations:
-    cert-manager.io/cluster-issuer: "letsencrypt-staging"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
     nginx.ingress.kubernetes.io/proxy-body-size: 20m
     nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
 spec:
   ingressClassName: nginx
   tls:
   - hosts:
-    - owncloud.xinutec.org
-    secretName: owncloud-tls
+    - dash.xinutec.org
+    secretName: dash-tls
   rules:
-  - host: owncloud.xinutec.org
+  - host: dash.xinutec.org
     http:
       paths:
       - path: /

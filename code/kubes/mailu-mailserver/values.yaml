@@ -31,10 +31,10 @@ certmanager:
 
 front:
   hostPort:
-    enabled: false
+    enabled: true
 
   externalService:
-    enabled: true
+    enabled: false
     type: LoadBalancer
     externalTrafficPolicy: Local
 
