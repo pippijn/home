@@ -12,38 +12,44 @@ spec:
     requests:
       storage: 5Gi
 ---
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   namespace: vps
   name: irssi-pippijn
-  labels:
-    run: irssi-pippijn
 spec:
-  volumes:
-    - name: data
-      persistentVolumeClaim:
-        claimName: irssi-storage
-  containers:
-    - name: irssi
-      image: xinutec/irssi:latest
-      imagePullPolicy: Always
-      ports:
-        - containerPort: 22
-      resources:
-        requests:
-          memory: "64Mi"
-          cpu: "10m"
-        limits:
-          memory: "128Mi"
-          cpu: "100m"
-      volumeMounts:
-        - mountPath: /home/irssi
-          name: data
-          subPath: pippijn
-        - mountPath: /etc/ssh_keys
-          name: data
-          subPath: ssh
+  selector:
+    matchLabels:
+      run: irssi-pippijn
+  template:
+    metadata:
+      labels:
+        run: irssi-pippijn
+    spec:
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: irssi-storage
+      containers:
+        - name: irssi
+          image: xinutec/irssi:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 22
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "10m"
+            limits:
+              memory: "128Mi"
+              cpu: "100m"
+          volumeMounts:
+            - mountPath: /home/irssi
+              name: data
+              subPath: pippijn
+            - mountPath: /etc/ssh_keys
+              name: data
+              subPath: ssh
 ---
 apiVersion: v1
 kind: Service
