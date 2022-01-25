@@ -10,7 +10,9 @@
 /.zcompdump-*
 /.zshenv
 /.zshrc
+*.log
 *.swp
+*.unison.tmp
 
 # Large data sets not stored in git.
 /Documents
