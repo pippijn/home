@@ -85,7 +85,9 @@ let sys = (import <nixpkgs/nixos> {}).config; in
 
     shellAliases = {
       gs = "gst";
-      ll = "ls -l";
+      ls = "ls -Fv --color=tty --group-directories-first --quoting-style=shell";
+      l = "ls -l";
+      ll = "ls -lah";
       reb = "sudo nixos-rebuild switch";
       hreb = "home-manager switch";
       k = "sudo kubectl";
