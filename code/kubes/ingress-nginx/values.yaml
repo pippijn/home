@@ -1,7 +1,4 @@
 ---
 controller:
-  kind: DaemonSet
-  hostPort:
-    enabled: true
   service:
-    enabled: false
+    loadBalancerIP: "10.51.0.100"

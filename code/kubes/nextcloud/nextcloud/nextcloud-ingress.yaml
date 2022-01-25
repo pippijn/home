@@ -5,7 +5,7 @@ metadata:
   namespace: nextcloud
   name: nextcloud-ingress
   annotations:
-    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    cert-manager.io/cluster-issuer: "letsencrypt-staging"
     nginx.ingress.kubernetes.io/proxy-body-size: 20m
     nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
 spec:
