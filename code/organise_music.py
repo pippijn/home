@@ -21,7 +21,12 @@ def is_tag(line: str) -> bool:
             "TIT2", "TPE1", "TALB", "TYER", "TRCK", "TPOS", "TCON")
 
 
-def organise_mp3(oldname: str) -> None:
+def organise_mp3(oldname: str) -> int:
+    if os.path.exists(oldname[:-4] + ".flac") or os.path.exists(oldname[:-4] + ".ogg"):
+        print(f"deleting {oldname}")
+        os.remove(oldname)
+        return 0
+
     stdout = subprocess.run(["id3v2", "-l", oldname], capture_output=True, check=True).stdout
     try:
         out = stdout.decode("utf-8")
@@ -49,7 +54,7 @@ def organise_mp3(oldname: str) -> None:
         return 0
 
 
-def organise_vorbis(command: List[str], oldname: str, suffix: str) -> None:
+def organise_vorbis(command: List[str], oldname: str, suffix: str) -> int:
     def ucfirst(k: str, v: str) -> Tuple[str, str]:
         return (k.upper(), v)
     try:
