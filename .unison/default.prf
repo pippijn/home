@@ -5,7 +5,6 @@ root = ssh://amun
 ignore = Name {.*}
 ignore = Path {code}
 
-ignore = Path {Music}
 ignore = Path {backup}
 ignore = Path {media}
 ignore = Path {tmp}
