@@ -13,6 +13,7 @@ let sys = (import <nixpkgs/nixos> {}).config; in
     gnupg
     keychain
     screen
+    unison
   ];
 
   # This value determines the Home Manager release that your
@@ -29,17 +30,17 @@ let sys = (import <nixpkgs/nixos> {}).config; in
     EDITOR = "vi";
   };
 
-  # https://github.com/nix-community/home-manager/issues/2662
-#  services.unison = {
-#    enable = sys.networking.hostName != "amun";
-#
-#    pairs = {
-#      roots = [
-#        "/home/pippijn/Photos"
-#        "ssh://amun/home/pippijn/Photos"
-#      ];
-#    };
-#  };
+  services.unison = {
+    enable = sys.networking.hostName != "amun";
+
+    # https://github.com/nix-community/home-manager/issues/2662
+#   pairs = {
+#     roots = [
+#       "/home/pippijn/Photos"
+#       "ssh://amun/home/pippijn/Photos"
+#     ];
+#   };
+  };
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
