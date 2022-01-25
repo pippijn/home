@@ -4,8 +4,9 @@
 /.docker
 /.gnupg
 /.keychain
-/.lesshst
+/.lesshs*
 /.local
+/.python_history
 /.viminfo
 /.zcompdump-*
 /.zshenv

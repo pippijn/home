@@ -60,12 +60,14 @@ let sys = (import <nixpkgs/nixos> {}).config; in
   programs.neovim = {
     enable = true;
     plugins = with pkgs.vimPlugins; [
+      jellybeans-vim
       vim-nix
     ];
 
     extraConfig = ''
       nnoremap <C-l> :noh<CR><C-l>
       set viminfo='500,\"800
+      colorscheme jellybeans
     '';
   };
 
