@@ -1,6 +1,9 @@
 { config, pkgs, ... }:
 
-let sys = (import <nixpkgs/nixos> {}).config; in
+let
+  sys = (import <nixpkgs/nixos> {}).config;
+  isMaster = sys.networking.hostName == "amun";
+in
 {
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
@@ -13,7 +16,7 @@ let sys = (import <nixpkgs/nixos> {}).config; in
     gnupg
     keychain
     screen
-  ];
+  ] ++ (if isMaster then [ unison ] else []);
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage
@@ -30,7 +33,7 @@ let sys = (import <nixpkgs/nixos> {}).config; in
   };
 
   services.unison = {
-    enable = sys.networking.hostName != "amun";
+    enable = !isMaster;
 
     # https://github.com/nix-community/home-manager/issues/2662
     pairs = {

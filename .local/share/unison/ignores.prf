@@ -2,7 +2,6 @@ ignore = Name {.*}
 ignore = Path {code}
 
 ignore = Path {backup}
-ignore = Path {media}
 ignore = Path {tmp}
 
 immutable = Path {Photos}
