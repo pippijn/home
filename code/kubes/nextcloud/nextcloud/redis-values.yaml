@@ -1,0 +1,11 @@
+# kubectl get secret --namespace nextcloud redis -o jsonpath="{.data.redis-password}" | base64 --decode
+
+architecture: standalone
+
+master:
+  extraFlags:
+  - "--maxmemory 200mb"
+  resources:
+    limits:
+      cpu: 100m
+      memory: 256Mi
