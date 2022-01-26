@@ -43,6 +43,13 @@ spec:
           value: dash.xinutec.org
         - name: OVERWRITEPROTOCOL
           value: https
+        - name: REDIS_HOST
+          value: redis-master
+        - name: REDIS_HOST_PASSWORD
+          valueFrom:
+          - secretKeyRef:
+              name: redis
+              key: redis-password
         envFrom:
         - secretRef:
             name: nextcloud-db-secret
