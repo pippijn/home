@@ -95,7 +95,7 @@ let sys = (import <nixpkgs/nixos> {}).config; in
       ll = "ls -lah";
       reb = "sudo nixos-rebuild switch";
       hreb = "home-manager switch";
-      k = "sudo kubectl";
+      kubectl = "sudo kubectl";
       vi = "nvim";
     };
 
@@ -110,7 +110,7 @@ let sys = (import <nixpkgs/nixos> {}).config; in
 
     oh-my-zsh = {
       enable = true;
-      plugins = [ "docker" "git" ];
+      plugins = [ "docker" "git" "kubectl" ];
       theme = "cypher";
     };
   };
