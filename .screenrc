@@ -193,8 +193,8 @@ startup_message off
 screen -t 'irssi' -ln 0 ssh irssi
 screen -t 'top-amun' -ln 1 ssh amun -t top
 screen -t 'top-isis' -ln 2 ssh isis -t top
-screen -t 'dmesg-amun' -ln 1 ssh amun -t sudo dmesg -w
-screen -t 'dmesg-isis' -ln 2 ssh isis -t sudo dmesg -w
+screen -t 'dmesg-amun' -ln 1 ssh amun -t dmesg -w
+screen -t 'dmesg-isis' -ln 2 ssh isis -t dmesg -w
 
 deflogin off
 
