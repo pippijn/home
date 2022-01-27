@@ -3,6 +3,7 @@
 set -eu
 
 USER=pippijn
+PASS=$1
 
 #curl -u "$USER:$PASS" --insecure -i -X PROPFIND "https://dash.xinutec.org/remote.php/dav/addressbooks/users/$USER/contacts/" --upload-file - -H "Depth: 1" <<end
 #<?xml version="1.0"?>
