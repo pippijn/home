@@ -47,7 +47,7 @@ spec:
           value: redis-master
         - name: REDIS_HOST_PASSWORD
           valueFrom:
-          - secretKeyRef:
+            secretKeyRef:
               name: redis
               key: redis-password
         envFrom:
