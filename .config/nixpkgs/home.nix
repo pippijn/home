@@ -74,9 +74,14 @@ in
     ];
 
     extraConfig = ''
-      nnoremap <C-l> :noh<CR><C-l>
-      set viminfo='500,\"800
       colorscheme jellybeans
+
+      set nowrap
+      set viminfo='500,\"800
+
+      nnoremap <C-l> :noh<CR><C-l>
+
+      au BufNewFile,BufRead *.vcf set ft=vcard
     '';
   };
 
