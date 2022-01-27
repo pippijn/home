@@ -15,6 +15,7 @@ in
     git
     gnupg
     keychain
+    rclone
     screen
     unison
   ];
