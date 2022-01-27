@@ -1,8 +1,18 @@
-ignore = Name {.*}
+ignore = Name {.*/.*}
+ignore = Name {.*/*}
+ignore = Path {.bash_history}
+ignore = Name {.lesshs*}
+ignore = Path {.python_history}
+ignore = Name {.zcompdump*}
+ignore = Path {.zshenv}
+ignore = Path {.zshrc}
 ignore = Path {code}
 
 ignore = Path {backup}
 ignore = Path {tmp}
+
+ignorenot = Name {.gnupg/pubring.kbx*}
+ignorenot = Name {.gnupg/trustdb.gpg}
 
 #immutable = Path {Photos}
 #immutable = Path {Videos}
