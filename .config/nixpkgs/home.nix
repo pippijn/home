@@ -13,7 +13,7 @@ in
   # Packages that should be installed to the user profile.
   home.packages = with pkgs; [
     git
-    gnupg
+    git-crypt
     keychain
     rclone
     screen
@@ -32,6 +32,14 @@ in
 
   home.sessionVariables = {
     EDITOR = "vi";
+  };
+
+  programs.gpg = {
+    enable = true;
+  };
+
+  services.gpg-agent = {
+    enable = true;
   };
 
   services.unison = {

@@ -4,5 +4,5 @@ ignore = Path {code}
 ignore = Path {backup}
 ignore = Path {tmp}
 
-immutable = Path {Photos}
-immutable = Path {Videos}
+#immutable = Path {Photos}
+#immutable = Path {Videos}
