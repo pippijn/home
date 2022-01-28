@@ -13,37 +13,15 @@ initialAccount:
 # default log level. can be overridden globally or per service
 logLevel: WARNING
 
-subnet: 10.42.0.0/16
-
 ingress:
   className: nginx
 
-mail:
-  authRatelimit: 100/minute;1000/hour
-  messageSizeLimitInMegabytes: 50
-
 # certmanager settings
 certmanager:
-  enabled: true
-  issuerType: ClusterIssuer
   issuerName: letsencrypt-prod
   apiVersion: cert-manager.io/v1
 
-front:
-  hostPort:
-    enabled: true
-
-  externalService:
-    enabled: false
-    type: LoadBalancer
-    externalTrafficPolicy: Local
-
-    # Don't expose pop3 externally at all.
-    pop3:
-      pop3s: false
-
 persistence:
-  size: 100Gi
   storageClass: local-path
 
 # The secret key is required for protecting authentication cookies and must be set individually for each deployment
