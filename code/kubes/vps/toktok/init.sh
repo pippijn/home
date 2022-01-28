@@ -18,6 +18,12 @@ if grep "BEGIN" ~user/key.pem; then
   sudo -i -u user gpg --import ~user/key.pem
 fi
 
+# Re-initialise third party if this is an external volume mounted the
+# first time.
+if [ ! -d third_party/android/sdk ]; then
+  tools/prepare_third_party.sh
+fi
+
 sudo -i -u user bazel build -- //... -//echobot-jvm/...
 
 exec netcat -l 0.0.0.0 2000
