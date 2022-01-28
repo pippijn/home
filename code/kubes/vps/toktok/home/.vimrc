@@ -1,3 +1,4 @@
+set encoding=utf-8            " required for YCM
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
@@ -9,7 +10,9 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 
 " Plugins go here
-"Plugin 'ycm-core/YouCompleteMe'
+Plugin 'cappyzawa/starlark.vim'
+Plugin 'nanotech/jellybeans.vim'
+Plugin 'ycm-core/YouCompleteMe'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required

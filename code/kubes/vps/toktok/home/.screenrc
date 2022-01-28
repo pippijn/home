@@ -190,8 +190,6 @@ bindkey -m ^[Oc stuff ]  #"}]^f"
 
 startup_message off
 
-screen -t 'irssi' -ln 0 sh -c 'TERM=screen-256color irssi'
-
 deflogin off
 
 #bindkey -k F1 prev

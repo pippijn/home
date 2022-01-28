@@ -1,2 +1,7 @@
-toktok-stack/third_party/android/android-ndk-r*
-toktok-stack/third_party/android/sdk
+# The initial data copy for the image build doesn't need .git.
+**/.git
+**/*.tar
+workspace/bazel-*
+workspace/third_party/android/android-ndk-r*
+workspace/third_party/android/sdk
+workspace/third_party/javacpp

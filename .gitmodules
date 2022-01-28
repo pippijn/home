@@ -1,6 +1,3 @@
 [submodule "code/kubes/ircd/inspircd/inspircd"]
 	path = code/kubes/ircd/inspircd/inspircd
 	url = git@github.com:xinutec/inspircd
-[submodule "code/kubes/vps/toktok/toktok-stack"]
-	path = code/kubes/vps/toktok/toktok-stack
-	url = https://github.com/TokTok/toktok-stack
