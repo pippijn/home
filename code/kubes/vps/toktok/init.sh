@@ -14,16 +14,17 @@ fi
 ln -sf /etc/ssh_keys/* /etc/ssh/
 touch /etc/ssh_keys/.stamp
 
-if grep "BEGIN" ~user/key.pem; then
-  sudo -i -u user gpg --import ~user/key.pem
+if grep "BEGIN" ~builder/key.pem; then
+  sudo -i -u builder gpg --import ~builder/key.pem
 fi
 
-# Re-initialise third party if this is an external volume mounted the
-# first time.
+# Re-initialise third party and git remotes if this is an external volume
+# mounted the first time.
 if [ ! -d third_party/android/sdk ]; then
   tools/prepare_third_party.sh
+  tools/git-remotes
 fi
 
-sudo -i -u user bazel build -- //... -//echobot-jvm/...
+sudo -i -u builder bazel build //...
 
 exec netcat -l 0.0.0.0 2000

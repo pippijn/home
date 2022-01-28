@@ -74,7 +74,7 @@ in
       };
 
       toktok = {
-        user = "user";
+        user = "builder";
         hostname = "localhost";
         port = 2223;
         extraOptions = {
