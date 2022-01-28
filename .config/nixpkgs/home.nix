@@ -78,7 +78,9 @@ in
         hostname = "localhost";
         port = 2223;
         extraOptions = {
+          LogLevel = "QUIET";
           StrictHostKeyChecking = "off";
+          UserKnownHostsFile  = "/dev/null";
         };
       };
     };

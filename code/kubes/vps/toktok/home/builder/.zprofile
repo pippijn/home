@@ -10,3 +10,5 @@ export CXX=/usr/local/bin/clang++
 cd /src/workspace
 
 export PATH="$PATH:/src/workspace/hs-github-tools/tools"
+
+alias gs=gst

@@ -5,11 +5,11 @@ USER root
 RUN apt-get update && apt-get install -y --no-install-recommends \
  gnupg \
  locales \
+ neovim \
  netcat \
  openssh-server \
  screen \
  sudo \
- vim \
  zsh \
  && apt-get clean
 
@@ -42,6 +42,8 @@ RUN if [ ! -f .bazelrc.local ]; then cp .bazelrc.local.example .bazelrc.local; f
 
 # Add builder's configs.
 COPY --chown=builder:builder home/builder /home/builder/
+RUN git clone --depth=1 https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim \
+ && vi --headless +PluginInstall +qall
 
 USER root
 COPY etc /etc
