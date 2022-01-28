@@ -18,6 +18,8 @@ if grep "BEGIN" ~user/key.pem; then
   sudo -i -u user gpg --import ~user/key.pem
 fi
 
+sudo -i -u user bazel build -- //... -//echobot-jvm/...
+
 while true; do
   sleep 3600
 done
