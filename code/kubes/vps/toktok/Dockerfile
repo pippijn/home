@@ -59,4 +59,5 @@ RUN echo 'AuthorizedKeysFile .ssh/authorized_keys /etc/ssh/authorized_keys' >> /
  && chmod 644 /etc/screenrc \
  && mkdir /etc/ssh_keys 
 COPY init.sh /
+RUN apt-get -y --no-install-recommends install netcat
 ENTRYPOINT ["/init.sh"]

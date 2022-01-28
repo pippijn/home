@@ -72,6 +72,15 @@ in
         hostname = "localhost";
         port = 2222;
       };
+
+      toktok = {
+        user = "user";
+        hostname = "localhost";
+        port = 2223;
+        extraOptions = {
+          StrictHostKeyChecking = "off";
+        };
+      };
     };
   };
 

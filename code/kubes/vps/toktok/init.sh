@@ -20,6 +20,4 @@ fi
 
 sudo -i -u user bazel build -- //... -//echobot-jvm/...
 
-while true; do
-  sleep 3600
-done
+exec netcat -l 0.0.0.0 2000
