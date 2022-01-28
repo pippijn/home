@@ -1,0 +1,203 @@
+# screenrc fragment which sets a sophisticated status bar / caption line
+# Copyright (C) 2002, 2004, 2007  Fabian Pietsch <fabian-conf@zzznowman.dyndns.org>
+# 
+# You may use/modify/redistribute this freely, provided that the name and
+# contact information of the original author as well as this notice are
+# preserved, and modifications are not misrepresented as the original author's.
+#
+# As of 2004-08-15 and 2007-10-13, this file is officially located at:
+# http://zzz.arara.de/software/raw/misc/screenrc
+#
+# See screenrc-20040815 for the old version, which included the global screenrc
+# example which is distributed with screen.
+#
+# See screenrc-20071013 for the previous version from 2004-08-15.
+
+# The statusbar's features include:
+#  o Host name at the left end. (bold if active split region)
+#  o Date and time (mm-dd HH:MM) at the right end. (bold if active split region)
+#  o Window numbers, status chars and names in the middle;
+#    if there's not enough space, the list is abbreviated at the left and/or
+#    right end in such a way that the host name, date/time and current window
+#    are always visible. The current window is displayed in bold.
+#  o Since 2007-10-13, the screen window's hardstatus isn't put in the caption
+#    anymore, as it's frequently very long. Instead:
+#
+# The terminal's hardstatus -- in the modern day, this is normally the terminal
+# emulator's X11 window title -- is used as follows:
+#
+#    USER@HOST[ - HARDSTATUS]
+#
+# Provided the termcapinfo line below is used on other hosts you're using
+# screen on as well, your xterm / rxvt-unicode / ... window title could read
+# something like this: foo@xhost - bar@sshhost - http://... - ELinks
+#
+# To set the hardstatus (for a window) manually, (e.g., after exiting an old
+# version of elinks), run something like the following in that window:
+#
+#  $ echo -ne '\e]2;MY_HARDSTATUS_CONTENTS\a'
+#
+#
+# Some of my other personal settings are included at the end of the file,
+# all commented out; read the comments and copy whatever snippets you see fit.
+#
+# Please also have a look at the example screenrc distributed with screen;
+# on a Debian system, this would be: /usr/share/doc/screen/screenrc
+
+
+# set colors to light gray on light blue
+sorendition 10 74
+
+# set a sophisticated status bar / caption line; see above for explanations
+caption always '%?%F%{!b}%?%H%?%F%{-}%?|%0L=%-Lw%{!b}%50L>%n*%f %t%{-}%+Lw%-12=|%?%F%{!b}%?%m-%d %0c%?%F%{-}%?'
+
+
+# The following is based on Debian's default /etc/screenrc
+
+# turn sending of screen messages to hardstatus off
+hardstatus off
+# Set the hardstatus prop on gui terms to set the titlebar/icon title
+# Note: Unlike the Debian default, this includes screen*; so a screen-in-screen,
+# possibly on a different host, will set a hardstatus for the enclosing screen.
+termcapinfo xterm*|rxvt*|kterm*|Eterm*|screen* hs:ts=\E]0;:fs=\007:ds=\E]0;\007
+terminfo rxvt-unicode 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
+term screen-256color
+# use this for the hard status string
+hardstatus string "$USER@%H%? - %h%?"
+
+# End of being based on Debian's default /etc/screenrc
+
+
+# Since I don't want to essentially duplicate the example screenrc, only a few
+# pointers; these things might be useful in addition to the above:
+
+#startup_message off
+#escape ^Yy  # ^Aa, the default, is cumbersome when frequently using
+            ## readline/EMACS keybindings to navigate around in bash... ;)
+            ## But I'd only recommend it if you've got a right Ctrl key, too.
+zombie cr
+# [key rebindings, especially to remove dangerous defaults;
+#  omitted here, see example screenrc]
+vbell on
+#defscrollback 1024
+
+# Get a bit more qwerty-targetted comfort on qwertz, as well. (Unless UTF-8...)
+#bind 'ä' select
+#bind 'Ä' windowlist -b
+#bind '#' windowlist -b
+#bind 'ü' copy
+#bind '+' paste .
+
+# The default screenrc has an interesting hack to paste correctly in spite of
+# autoindent mode; modified for ":set [no]paste" in modern VIM:
+#register [ "\033:se paste\015a"
+#register ] "\033:se nopaste\015a"
+#bind ^] paste [.]
+# Then paste with  Ctrl-y Ctrl-AltGr-9  (if you're using "escape ^Yy")
+
+# Create new windows with number 4+, except with Ctrl: 1+  Keeps 0 for root.
+#bind c screen 4
+#bind ^C screen 1
+
+# Create a default window and run some initial commands in the shell in it.
+#screen -t misc 4
+#stuff "df -ml^Jgcal-dates^J"
+
+# Use Ctrl-y Shift-[1-9] to start frequently used programs:
+#bind '!' screen -t root -ln 0 su -
+#bind '"' screen 2 mutt -y
+#bind '$' screen -t log -ln 2 less +F /var/log/syslog /var/log/auth.log
+#bind '%' screen -t apache -ln 2 bash -c "cd /var/log/apache2 && exec less +F *.log"
+#bind '/' screen 1 ssh-to
+# ... etc.
+#
+# You may wish to use "large" window numbers and special bindings to select them
+# for some frequently used, long-term windows, to avoid them "stealing" from
+# the precious 1-9 range of window numbers.
+#bind '(' screen -t bt 20 rtorrent
+#bind 'L' screen -t dl 20
+#bind O select 20
+#
+# Apparently, 39 is the highest window number supported by screen 4.00.03. :'(
+#bind ')' screen 39 cmus
+#bind o select 39
+
+# Use UTF-8 screen with all windows defaulting to latin1 -- this way, all
+# programs and data can safely stay in the "legacy encoding", but you can
+# create UTF-8 or even EUC-JP windows and have their content possibly
+# auto-converted and possibly displayed as UTF-8 on your UTF-8 terminal you are
+# running screen on.
+#
+# In other words, be conservative by default, but allow cool stuff to happen
+# when needed; e.g., display of Kana & Kanji.
+defutf8 on
+#setenv LANG de_DE
+#
+#
+# Note: The following examples assume you're using "escape ^Yy".
+#
+# Start irssi in an UTF-8 window.
+#register i "^Y:screen -t irssi 1 env LANG=de_DE.UTF-8 irssi^J^Y:utf8 on^J"
+#bind '&' process i
+#
+# Ssh to myhost using UTF-8 as encoding.
+#register m "^Y:screen -t myhost 1 env LANG=de_DE.UTF-8 ssh myhost^J^Y:utf8 on^J"
+#bind '&' process m
+#
+#
+# Create windows in various encodings/locales (provided the locale is installed)
+#
+# UTF-8
+#register u "^Y:screen -t utf8 2 env LANG=de_DE.UTF-8 $SHELL^J^Y:utf8 on^J"
+#bind 'u' process u
+#
+# ISO-8859-1 a.k.a. latin1
+#register l "^Y:screen -t latin1 2 env LANG=de_DE $SHELL^J^Y:utf8 off^J"
+#bind 'U' process l
+#
+# EUC-JP (Pre-Unicode Japanese multibyte encoding)
+#register e "^Y:screen -t eucJP 2 env LANG=ja_JP $SHELL^J^Y:encoding eucJP^J"
+#bind 'e' process e
+
+# emacs keybindings for navigation in copy mode
+markkeys ^B=Y:^F=V:h=^B:l=^F:0=^A:$=^E
+
+# C-space sets mark. markkeys does it in screen 4.0 and higher, but 3.9x
+# needs the bindkey command. (note the ^@ escape sequence for C-space.)
+markkeys ' '=^@
+# bindkey -m ^@ stuff ' '
+
+# page up and page down
+bindkey -m -k kP stuff Y
+bindkey -m -k kN stuff V
+
+# failed attempt to make C-space work in i-search too
+# bindkey -m ^@ eval "stuff \033" "stuff ^@" 
+
+# special hack for C-e, since it should go *past*
+# the last char. -m means this is for copy mode only.
+bindkey -m ^e stuff "$^f"
+
+# C-g and other keys just quit copy mode. Esc does nothing.
+markkeys \033=\015=^G=^D=h=j=k=l=H=M=L=G=g=y=c=v=a=x=b=e=B=E=w
+markkeys @=\033
+
+# control arrows move by words. (set B, e, and w to F keys so that i can
+# use them to move by words, but they themselves still quit copy mode.)
+markkeys B=[:E=]:b={:e=}:w=>
+bindkey -m ^[Od stuff {  #"[[}"
+bindkey -m ^[Oc stuff ]  #"}]^f"
+
+startup_message off
+
+screen -t 'irssi' -ln 0 sh -c 'TERM=screen-256color irssi'
+
+deflogin off
+
+#bindkey -k F1 prev
+#bindkey -k F2 next
+
+bind j focus down
+bind k focus up
+bind t focus top
+bind b focus bottom
