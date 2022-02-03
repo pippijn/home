@@ -83,6 +83,17 @@ in
           UserKnownHostsFile  = "/dev/null";
         };
       };
+
+      toktok-dev = {
+        user = "builder";
+        hostname = "localhost";
+        port = 2224;
+        extraOptions = {
+          LogLevel = "QUIET";
+          StrictHostKeyChecking = "off";
+          UserKnownHostsFile  = "/dev/null";
+        };
+      };
     };
   };
 

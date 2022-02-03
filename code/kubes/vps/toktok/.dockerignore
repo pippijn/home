@@ -1,6 +1,12 @@
 # The initial data copy for the image build doesn't need .git.
+**/.cache
 **/.git
+**/.mypy_cache
+**/.stack-work
+**/.vscode
 **/*.tar
+**/compile_commands.json
+**/__pycache__
 workspace/bazel-*
 workspace/third_party/android/android-ndk-r*
 workspace/third_party/android/sdk
