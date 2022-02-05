@@ -1,10 +1,9 @@
 { config, pkgs, ... }:
 
 let
-  sys = (import <nixpkgs/nixos> {}).config;
+  sys = (import <nixpkgs/nixos> { }).config;
   isMaster = sys.networking.hostName == "amun";
-in
-{
+in {
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
   home.username = "pippijn";
@@ -12,12 +11,12 @@ in
 
   # Packages that should be installed to the user profile.
   home.packages = with pkgs; [
-    git
-    git-crypt
-    keychain
-    rclone
-    screen
-    unison
+    git # version control
+    git-crypt # encrypted files in public git repos
+    keychain # ssh-agent
+    rclone # sync with nextcloud
+    screen # terminal window manager
+    unison # sync with other machines
   ];
 
   # This value determines the Home Manager release that your
@@ -30,17 +29,10 @@ in
   # changes in each release.
   home.stateVersion = "21.11";
 
-  home.sessionVariables = {
-    EDITOR = "vi";
-  };
+  home.sessionVariables = { EDITOR = "vi"; };
 
-  programs.gpg = {
-    enable = true;
-  };
-
-  services.gpg-agent = {
-    enable = true;
-  };
+  programs.gpg.enable = true;
+  services.gpg-agent.enable = true;
 
   services.unison = {
     enable = !isMaster;
@@ -48,14 +40,9 @@ in
     # https://github.com/nix-community/home-manager/issues/2662
     pairs = {
       home = {
-        roots = [
-          "/home/pippijn"
-          "ssh://amun"
-        ];
+        roots = [ "/home/pippijn" "ssh://amun" ];
 
-        commandOptions = {
-          include = "ignores";
-        };
+        commandOptions.include = "ignores";
       };
     };
   };
@@ -80,7 +67,7 @@ in
         extraOptions = {
           LogLevel = "QUIET";
           StrictHostKeyChecking = "off";
-          UserKnownHostsFile  = "/dev/null";
+          UserKnownHostsFile = "/dev/null";
         };
       };
 
@@ -91,7 +78,7 @@ in
         extraOptions = {
           LogLevel = "QUIET";
           StrictHostKeyChecking = "off";
-          UserKnownHostsFile  = "/dev/null";
+          UserKnownHostsFile = "/dev/null";
         };
       };
     };
@@ -99,10 +86,7 @@ in
 
   programs.neovim = {
     enable = true;
-    plugins = with pkgs.vimPlugins; [
-      jellybeans-vim
-      vim-nix
-    ];
+    plugins = with pkgs.vimPlugins; [ jellybeans-vim vim-nix ];
 
     extraConfig = ''
       colorscheme jellybeans
