@@ -1,6 +1,6 @@
 FROM debian:bullseye-slim
 
-ENV VERSION=3.12.0
+ENV VERSION=3.13.0
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
  ca-certificates \
