@@ -13,6 +13,7 @@ in {
   home.packages = with pkgs; [
     git # version control
     git-crypt # encrypted files in public git repos
+    jq # json query tool
     keychain # ssh-agent
     rclone # sync with nextcloud
     screen # terminal window manager
