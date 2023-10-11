@@ -27,7 +27,7 @@ spec:
           name: nginx-config
       containers:
       - name: nextcloud
-        image: nextcloud:25-fpm-alpine
+        image: nextcloud:26.0.5-fpm-alpine
         imagePullPolicy: Always
         env:
         - name: MYSQL_HOST
