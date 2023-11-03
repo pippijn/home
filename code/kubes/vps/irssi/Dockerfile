@@ -1,7 +1,9 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
  irssi \
+ libauthen-sasl-perl \
+ libcommon-sense-perl \
  locales \
  netcat \
  openssh-server \
