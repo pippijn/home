@@ -1,3 +1,2 @@
 /.github-token filter=git-crypt diff=git-crypt
-/.heroku-api-key filter=git-crypt diff=git-crypt
 /key.pem filter=git-crypt diff=git-crypt
