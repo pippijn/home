@@ -111,6 +111,10 @@ in {
       setopt hist_reduce_blanks       # remove superfluous blanks
       keychain id_rsa
       . .keychain/${sys.networking.hostName}-sh
+
+      # Fix some permissions in case they went wrong after git clone
+      # and decrypt.
+      chmod 0600 $(git-crypt status | grep "^    encrypted: " | cut -b16-)
     '';
 
     shellAliases = {
