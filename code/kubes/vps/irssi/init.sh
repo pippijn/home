@@ -4,7 +4,7 @@ set -eux
 
 # Fix up permissions, in case kubernetes provided us with an overly permissive
 # home directory or with incorrect ownership.
-chmod 0750 /home/irssi
+chmod 0750 /home/irssi /etc/ssh_keys
 chown irssi:irssi /home/irssi
 
 service ssh start
