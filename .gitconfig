@@ -3,3 +3,5 @@
 [user]
 	email = pippijn@xinutec.org
 	name = Pippijn van Steenhoven
+[safe]
+	directory = /etc/nixos
