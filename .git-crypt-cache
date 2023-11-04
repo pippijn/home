@@ -1,0 +1,6 @@
+.config/rclone/rclone.conf
+.ssh/id_rsa
+code/kubes/mailu-mailserver/secrets.yaml
+code/kubes/vps/toktok/home/.github-token
+code/kubes/vps/toktok/home/.ssh/id_rsa
+code/kubes/vps/toktok/home/key.pem
