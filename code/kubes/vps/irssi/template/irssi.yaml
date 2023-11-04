@@ -1,0 +1,61 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: vps-${user}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: vps-${user}
+  name: irssi-storage
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: vps-${user}
+  name: irssi-${user}
+spec:
+  selector:
+    matchLabels:
+      run: irssi-${user}
+  template:
+    metadata:
+      labels:
+        run: irssi-${user}
+    spec:
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: irssi-storage
+      containers:
+        - name: irssi
+          image: xinutec/irssi:latest
+          imagePullPolicy: Always
+          env:
+          - name: IRSSI_USER
+            value: ${user}
+          ports:
+            - containerPort: 22
+              hostPort: ${port}
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "10m"
+            limits:
+              memory: "128Mi"
+              cpu: "100m"
+          volumeMounts:
+            - mountPath: /home/irssi
+              name: data
+              subPath: home
+            - mountPath: /etc/ssh_keys
+              name: data
+              subPath: ssh
