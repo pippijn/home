@@ -18,7 +18,8 @@ config_pull() {
     sleep 300
 
     echo "[$(date)] Checking for new configs"
-    git pull
+    git fetch
+    git reset --hard origin/main
     # Check whether anything changed.
     git rev-parse HEAD > /tmp/inspircd.hash.new
     diff /tmp/inspircd.hash.new /tmp/inspircd.hash || {
