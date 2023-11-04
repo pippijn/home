@@ -117,6 +117,10 @@ in {
       # Fix some permissions in case they went wrong after git clone
       # and decrypt. `creb` rebuilds it.
       chmod 0600 $(cat .git-crypt/cache)
+
+      # XXX: set this again, because something is overriding it.
+      # TODO: remove once I figure out why.
+      export EDITOR=${config.home.sessionVariables.EDITOR}
     '';
 
     shellAliases = {
