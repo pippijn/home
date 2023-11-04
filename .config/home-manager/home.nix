@@ -113,8 +113,7 @@ in {
       . .keychain/${sys.networking.hostName}-sh
 
       # Fix some permissions in case they went wrong after git clone
-      # and decrypt. To update, run:
-      #   git-crypt status | grep '^    encrypted: ' | cut -b16- > .git-crypt/cache
+      # and decrypt. `creb` rebuilds it.
       chmod 0600 $(cat .git-crypt/cache)
     '';
 
@@ -125,6 +124,7 @@ in {
       ll = "ls -lah";
       reb = "sudo nixos-rebuild switch";
       hreb = "home-manager switch";
+      creb = "git-crypt status | grep '^    encrypted: ' | cut -b16- > .git-crypt/cache";
       kubectl = "sudo kubectl";
       vi = "nvim";
     };
