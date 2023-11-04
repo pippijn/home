@@ -7,7 +7,6 @@ metadata:
   labels:
     app: nextcloud
 spec:
-  replicas: 1
   selector:
     matchLabels:
       pod-label: nextcloud-db-pod

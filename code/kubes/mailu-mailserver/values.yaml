@@ -1,28 +1,18 @@
-# The mail domain is required. See https://github.com/Mailu/Mailu/blob/master/docs/faq.rst#what-is-the-difference-between-domain-and-hostnames
 domain: xinutec.org
-
-# A list of mail hostnames is required. The first will be used as primary mail hostname
 hostnames:
-- mail.xinutec.org
-
+  - mail.xinutec.org
 initialAccount:
-  domain: xinutec.org
-  #password: XXX # XXX: Set when using this file.
-  username: mailadmin
-
-# default log level. can be overridden globally or per service
-logLevel: WARNING
-
-ingress:
-  className: nginx
-
-# certmanager settings
-certmanager:
-  issuerName: letsencrypt-prod
-  apiVersion: cert-manager.io/v1
-
+  enabled: true
+  username: "mailadmin"
+  domain: "xinutec.org"
+  password: ""  # XXX: add here when updating
+  mode: "update"
+logLevel: INFO
 persistence:
+  size: 100Gi
   storageClass: local-path
-
-# The secret key is required for protecting authentication cookies and must be set individually for each deployment
-#secretKey: XXX # XXX: Set when using this file.
+ingress:
+  ingressClassName: "nginx"
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-staging
+secretKey: ""
