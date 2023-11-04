@@ -7,6 +7,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
  locales \
  netcat \
  openssh-server \
+ rsync \
  screen \
  vim \
  && apt-get clean
@@ -18,8 +19,8 @@ RUN groupadd -r -g 1000 irssi \
 
 WORKDIR /home/irssi
 COPY init.sh /
-COPY etc /etc
-RUN echo 'AuthorizedKeysFile .ssh/authorized_keys /etc/ssh/authorized_keys' >> /etc/ssh/sshd_config \
- && chmod 644 /etc/screenrc \
+COPY etc /etc/
+COPY home /home/
+RUN chmod 644 /etc/screenrc \
  && mkdir /etc/ssh_keys
 ENTRYPOINT ["/init.sh"]

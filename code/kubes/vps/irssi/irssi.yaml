@@ -34,6 +34,9 @@ spec:
         - name: irssi
           image: xinutec/irssi:latest
           imagePullPolicy: Always
+          env:
+          - name: IRSSI_USER
+            value: pippijn
           ports:
             - containerPort: 22
           resources:

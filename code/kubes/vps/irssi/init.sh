@@ -14,7 +14,17 @@ fi
 ln -sf /etc/ssh_keys/* /etc/ssh/
 touch /etc/ssh_keys/.stamp
 
+# Make "irssi" user accessible for the VPS owner. Run this command as the
+# irssi user, otherwise root may change file ownership.
+if [ ! -f .ssh/authorized_keys ]; then
+  echo "Copying initial home for $IRSSI_USER"
+  su - irssi -c "rsync -avrP /home/$IRSSI_USER/ /home/irssi"
+fi
+
+# Start screen for "irssi" user. It's up to the user what that does exactly,
+# but the default /etc/screenrc launches irssi.
 su - irssi -c 'screen -d -m'
+
 while true; do
   echo "Starting health endpoint"
   # TODO: implement actual health check
