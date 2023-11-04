@@ -8,6 +8,7 @@ ignore = Path {.python_history}
 ignore = Name {.zcompdump*}
 ignore = Path {.zshenv}
 ignore = Path {.zshrc}
+ignore = Path {README.md}
 
 # Already in git.
 ignore = Path {code}
