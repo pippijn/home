@@ -33,4 +33,4 @@ config_pull() {
 git pull
 # Continuous fetch and rehash loop.
 config_pull &
-exec /usr/sbin/inspircd --nofork
+exec /usr/bin/inspircd --nofork

@@ -1,15 +1,18 @@
-FROM debian:bullseye-slim
-
-ENV VERSION=3.13.0
+FROM debian:bookworm-slim
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
  ca-certificates \
  git \
  openssl \
  wget \
- && wget "https://github.com/inspircd/inspircd/releases/download/v$VERSION/inspircd_$VERSION.deb11u1_amd64.deb" \
- && apt-get install -y --no-install-recommends "./inspircd_$VERSION.deb11u1_amd64.deb" \
- && rm "inspircd_$VERSION.deb11u1_amd64.deb" \
+ && apt-get clean
+
+ENV VERSION=3.16.1
+
+RUN apt-get update \
+ && wget "https://github.com/inspircd/inspircd/releases/download/v$VERSION/inspircd_$VERSION.deb12u1_amd64.deb" \
+ && apt-get install -y --no-install-recommends "./inspircd_$VERSION.deb12u1_amd64.deb" \
+ && rm "inspircd_$VERSION.deb12u1_amd64.deb" \
  && apt-get clean
 
 # Root actions: create pid file (even though we know the pid is always going
@@ -32,4 +35,5 @@ RUN git clone https://github.com/xinutec/inspircd /etc/inspircd \
 COPY --chown=irc:irc inspircd/conf/secret /etc/inspircd/conf/secret
 
 COPY init.sh /
+RUN ["/usr/bin/inspircd", "--version"]
 ENTRYPOINT ["/init.sh"]
