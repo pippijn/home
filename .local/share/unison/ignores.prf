@@ -1,3 +1,5 @@
+# Ignore most dotfile directories, those are either in git or should be
+# ignored there, too.
 ignore = Name {.*/.*}
 ignore = Name {.*/*}
 ignore = Path {.bash_history}
@@ -6,13 +8,23 @@ ignore = Path {.python_history}
 ignore = Name {.zcompdump*}
 ignore = Path {.zshenv}
 ignore = Path {.zshrc}
+
+# Already in git.
 ignore = Path {code}
 
+# Currently not synced, but maybe should.
 ignore = Path {backup}
+
+# Unimportant temporary stuff.
 ignore = Path {tmp}
 
+# Unignore gnugp stuff. We do want that synced across hosts. GPG keys are
+# shared (maybe they shouldn't, but I'm lazy and the point of unison is to
+# protect against a machine burning down).
 ignorenot = Name {.gnupg/pubring.kbx*}
 ignorenot = Name {.gnupg/trustdb.gpg}
 
+# These aren't actually immutable yet, but will be once I'm done with
+# exif cleanups etc.
 #immutable = Path {Photos}
 #immutable = Path {Videos}
