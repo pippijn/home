@@ -114,8 +114,8 @@ in {
 
       # Fix some permissions in case they went wrong after git clone
       # and decrypt. To update, run:
-      #   git-crypt status | grep '^    encrypted: ' | cut -b16- > .git-crypt-cache
-      chmod 0600 $(cat .git-crypt-cache)
+      #   git-crypt status | grep '^    encrypted: ' | cut -b16- > .git-crypt/cache
+      chmod 0600 $(cat .git-crypt/cache)
     '';
 
     shellAliases = {
