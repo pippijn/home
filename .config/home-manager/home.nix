@@ -59,13 +59,13 @@ in {
     matchBlocks = {
       irssi = {
         user = "irssi";
-        hostname = "localhost";
-        port = 2222;
+        hostname = "amun";
+        port = 2230;
       };
 
       toktok = {
         user = "builder";
-        hostname = "localhost";
+        hostname = "amun";
         port = 2223;
         extraOptions = {
           LogLevel = "QUIET";
@@ -76,7 +76,7 @@ in {
 
       toktok-dev = {
         user = "builder";
-        hostname = "localhost";
+        hostname = "amun";
         port = 2224;
         extraOptions = {
           LogLevel = "QUIET";

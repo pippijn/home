@@ -21,15 +21,15 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: vps-pippijn
-  name: irssi-pippijn
+  name: irssi
 spec:
   selector:
     matchLabels:
-      run: irssi-pippijn
+      run: irssi
   template:
     metadata:
       labels:
-        run: irssi-pippijn
+        run: irssi
     spec:
       volumes:
         - name: data

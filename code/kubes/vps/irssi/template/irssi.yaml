@@ -21,15 +21,15 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: vps-${user}
-  name: irssi-${user}
+  name: irssi
 spec:
   selector:
     matchLabels:
-      run: irssi-${user}
+      run: irssi
   template:
     metadata:
       labels:
-        run: irssi-${user}
+        run: irssi
     spec:
       volumes:
         - name: data
