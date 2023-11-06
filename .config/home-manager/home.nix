@@ -11,13 +11,13 @@ in {
 
   # Packages that should be installed to the user profile.
   home.packages = with pkgs; [
-    git # version control
+    git       # version control
     git-crypt # encrypted files in public git repos
-    jq # json query tool
-    keychain # ssh-agent
-    rclone # sync with nextcloud
-    screen # terminal window manager
-    unison # sync with other machines
+    jq        # json query tool
+    keychain  # ssh-agent
+    rclone    # sync with nextcloud
+    screen    # terminal window manager
+    unison    # sync with other machines
   ];
 
   # This value determines the Home Manager release that your
@@ -89,17 +89,27 @@ in {
 
   programs.neovim = {
     enable = true;
-    plugins = with pkgs.vimPlugins; [ jellybeans-vim vim-nix ];
+    plugins = with pkgs.vimPlugins; [
+      jellybeans-vim
+      vim-nix
+    ];
 
     extraConfig = ''
       colorscheme jellybeans
 
+      set expandtab
       set nowrap
+      set scrolloff=5
+      set sidescrolloff=3
+      set cursorline
+      set backup
+      set backupdir=~/.local/state/nvim/backup/
       set viminfo='500,\"800
 
       nnoremap <C-l> :noh<CR><C-l>
+      map Q gqap
 
-      au BufNewFile,BufRead *.vcf set ft=vcard
+      au FileType bzl set ts=4 sw=4
     '';
   };
 
