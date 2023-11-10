@@ -5,7 +5,7 @@ initialAccount:
   enabled: true
   username: "mailadmin"
   domain: "xinutec.org"
-  password: ""  # XXX: add here when updating
+  #password: ""  # XXX: add here when updating
   mode: "update"
 logLevel: INFO
 persistence:
@@ -14,5 +14,5 @@ persistence:
 ingress:
   ingressClassName: "nginx"
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-staging
-secretKey: ""
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+#secretKey: ""  # XXX: add here when updating
