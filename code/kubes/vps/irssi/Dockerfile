@@ -1,6 +1,7 @@
 FROM ubuntu:22.04
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
+ ca-certificates \
  irssi \
  libauthen-sasl-perl \
  libcommon-sense-perl \
