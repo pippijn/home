@@ -38,10 +38,20 @@ in {
   services.gpg-agent.enable = true;
 
   services.unison = {
-    enable = !isMaster;
+    enable = true;
 
-    # https://github.com/nix-community/home-manager/issues/2662
-    pairs = {
+    pairs = if isMaster then {
+#     picade = {
+#       roots = [
+#         "/home/pippijn/code/picade/home/pi"
+#         "ssh://pi@10.100.0.100"
+#         "ssh://pi@10.100.0.101"
+#         "ssh://pi@10.100.0.102"
+#         "ssh://pi@10.100.0.103"
+#         "ssh://pi@10.100.0.104"
+#       ];
+#     };
+    } else {
       home = {
         roots = [ "/home/pippijn" "ssh://amun" ];
 
