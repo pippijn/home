@@ -9,3 +9,6 @@ backplane:
           value: "*"
 worker:
   publicName: "10.100.0.3:8981"
+  capabilities:
+    cas: true
+    execution: false  # odin is too slow
