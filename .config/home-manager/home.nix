@@ -66,6 +66,14 @@ in {
   programs.ssh = {
     enable = true;
 
+    controlMaster = "auto";
+    controlPersist = "10m";
+
+    extraConfig = ''
+      IdentityFile ~/.ssh/id_ed25519
+      IdentityFile ~/.ssh/id_rsa
+    '';
+
     matchBlocks = {
       irssi = {
         user = "irssi";
@@ -131,7 +139,8 @@ in {
     initExtra = ''
       unsetopt beep                   # don't beep, ever
       setopt hist_reduce_blanks       # remove superfluous blanks
-      keychain id_rsa
+      chmod 0600 $HOME/.ssh/id_ed25519 $HOME/.ssh/id_rsa
+      keychain id_ed25519 id_rsa
       . .keychain/${sys.networking.hostName}-sh
 
       # Fix some permissions in case they went wrong after git clone
