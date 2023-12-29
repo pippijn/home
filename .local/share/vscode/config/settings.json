@@ -1,3 +1,7 @@
 {
-    "cmake.configureOnOpen": false
+    "cmake.configureOnOpen": false,
+    "files.associations": {
+        "tox_network_impl.h": "c",
+        "inet.h": "c"
+    }
 }
