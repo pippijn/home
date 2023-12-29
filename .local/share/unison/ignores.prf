@@ -25,6 +25,9 @@ ignore = Path {tmp}
 ignorenot = Name {.gnupg/pubring.kbx*}
 ignorenot = Name {.gnupg/trustdb.gpg}
 
+# Sync container zsh history.
+ignorenot = Name {.local/share/zsh/toktok}
+
 # These aren't actually immutable yet, but will be once I'm done with
 # exif cleanups etc.
 #immutable = Path {Photos}
