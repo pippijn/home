@@ -25,7 +25,8 @@ ignore = Path {tmp}
 ignorenot = Name {.gnupg/pubring.kbx*}
 ignorenot = Name {.gnupg/trustdb.gpg}
 
-# Sync container zsh history.
+# Sync container zsh history and vscode server.
+ignorenot = Name {.local/share/vscode/server}
 ignorenot = Name {.local/share/zsh/toktok}
 
 # These aren't actually immutable yet, but will be once I'm done with
