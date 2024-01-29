@@ -2,6 +2,8 @@
 
 set -eux
 
+cd "$HOME/code/kubes/ircd/inspircd"
+
 POD=$(sudo kubectl get pod -n ircd | grep '^inspircd' | awk '{print $1}')
 HOST=org.xinutec.amun
 
