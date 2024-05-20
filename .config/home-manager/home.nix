@@ -18,6 +18,7 @@ in {
     rclone    # sync with nextcloud
     screen    # terminal window manager
     unison    # sync with other machines
+    rxvt-unicode
   ];
 
   # This value determines the Home Manager release that your

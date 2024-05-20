@@ -19,9 +19,20 @@ spec:
   ingressClassName: nginx
   tls:
   - hosts:
+    - xinutec.org
     - irc.xinutec.net
     secretName: irc-tls
   rules:
+  - host: xinutec.org
+    http:
+      paths:
+      - path: /.well-known
+        pathType: Prefix
+        backend:
+          service:
+            name: certbot-forward
+            port:
+              number:  80
   - host: irc.xinutec.net
     http:
       paths:
@@ -32,63 +43,3 @@ spec:
             name: certbot-forward
             port:
               number:  80
-#---
-#apiVersion: apps/v1
-#kind: Deployment
-#metadata:
-#  namespace: ircd
-#  name: httpd-irc
-#spec:
-#  selector:
-#    matchLabels:
-#      run: httpd-irc
-#  replicas: 2
-#  template:
-#    metadata:
-#      labels:
-#        run: httpd-irc
-#    spec:
-#      containers:
-#      - name: httpd-irc
-#        image: nginx
-#        ports:
-#        - containerPort: 80
-#---
-#apiVersion: v1
-#kind: Service
-#metadata:
-#  namespace: ircd
-#  name: httpd-irc
-#  labels:
-#    run: httpd-irc
-#spec:
-#  ports:
-#  - port: 80
-#    protocol: TCP
-#  selector:
-#    run: httpd-irc
-#---
-#apiVersion: networking.k8s.io/v1
-#kind: Ingress
-#metadata:
-#  namespace: ircd
-#  name: irc-ingress
-#  annotations:
-#    cert-manager.io/cluster-issuer: "letsencrypt-staging"
-#spec:
-#  ingressClassName: nginx
-#  tls:
-#  - hosts:
-#    - irc.xinutec.com
-#    secretName: irc-tls
-#  rules:
-#  - host: irc.xinutec.com
-#    http:
-#      paths:
-#      - path: /
-#        pathType: Prefix
-#        backend:
-#          service:
-#            name: httpd-irc
-#            port:
-#              number:  80
