@@ -1,2 +1,3 @@
 /.github-token filter=git-crypt diff=git-crypt
+/.pvs-license filter=git-crypt diff=git-crypt
 /key.pem filter=git-crypt diff=git-crypt

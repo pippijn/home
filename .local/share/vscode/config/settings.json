@@ -95,6 +95,8 @@
         "*.inc": "cpp",
         "complex": "cpp",
         "stacktrace": "cpp",
-        "auto_test_support.h": "c"
+        "auto_test_support.h": "c",
+        "bin_unpack.h": "c",
+        "*.moc": "c"
     }
 }
