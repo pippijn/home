@@ -22,7 +22,7 @@ data:
       include       /etc/nginx/mime.types;
       default_type  application/octet-stream;
       types {
-        application/javascript js mjs;
+        application/javascript mjs;
       }
 
       sendfile        on;
