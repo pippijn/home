@@ -2,8 +2,8 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  namespace: nextcloud
-  name: nextcloud-ingress
+  namespace: nocodb
+  name: nocodb-ingress
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
     nginx.ingress.kubernetes.io/proxy-body-size: "4096m"
@@ -12,16 +12,16 @@ spec:
   ingressClassName: nginx
   tls:
   - hosts:
-    - dash.xinutec.org
-    secretName: dash-tls
+    - nocodb.xinutec.org
+    secretName: nocodb-tls
   rules:
-  - host: dash.xinutec.org
+  - host: nocodb.xinutec.org
     http:
       paths:
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: nextcloud-server
+            name: nocodb-server
             port:
-              number: 80
+              number: 8080

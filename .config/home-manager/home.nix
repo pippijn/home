@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 let
   sys = (import <nixpkgs/nixos> { }).config;
@@ -15,6 +15,7 @@ in {
     git-crypt # encrypted files in public git repos
     jq        # json query tool
     keychain  # ssh-agent
+    python3   # various scripts
     rclone    # sync with nextcloud
     screen    # terminal window manager
     unison    # sync with other machines
@@ -33,6 +34,12 @@ in {
 
   home.sessionVariables = {
     EDITOR = config.programs.zsh.shellAliases.vi;
+
+    NOCODB_TOKEN =
+      let tokenFile = "${config.home.homeDirectory}/.nocodb"; in
+      if builtins.pathExists tokenFile
+        then lib.removeSuffix "\n" (builtins.readFile tokenFile)
+        else "";
   };
 
   programs.gpg.enable = true;

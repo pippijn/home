@@ -1,0 +1,44 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: nocodb
+  name: nocodb-server
+  labels:
+    app: nocodb
+spec:
+  selector:
+    matchLabels:
+      pod-label: nocodb-server-pod
+  template:
+    metadata:
+      labels:
+        pod-label: nocodb-server-pod
+    spec:
+      volumes:
+      # Create the shared files volume to be used in both pods
+      - name: server-storage
+        persistentVolumeClaim:
+          claimName: nocodb-storage
+      containers:
+      - name: nocodb
+        image: nocodb/nocodb:latest
+        imagePullPolicy: Always
+        volumeMounts:
+        - name: server-storage
+          mountPath: /usr/app/data
+          subPath: server-data
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: nocodb
+  name: nocodb-server
+  labels:
+    app: nocodb
+spec:
+  selector:
+    pod-label: nocodb-server-pod
+  ports:
+  - protocol: TCP
+    port: 8080
