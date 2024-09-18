@@ -59,6 +59,10 @@ def compute_total(ingredients):
     return ingredients + (total,)
 
 
+def sort_by_amount(ingredients):
+    return tuple(sorted(ingredients, reverse=True, key=lambda ingredient: ingredient["Amount (g)"]))
+
+
 class HealthDb:
     def __init__(self):
         self.conn = http.client.HTTPSConnection("nocodb.xinutec.org")
@@ -71,13 +75,13 @@ class HealthDb:
         res = self.conn.getresponse()
         return json.loads(res.read().decode("utf-8"))["list"]
 
-    def list_table_records(self, table: str, view: str = "", fields: tuple[str] = tuple(), key: str = "Id"):
+    def list_table_records(self, table: str, view: str = "", fields: tuple[str] = tuple(), key: str = "Id", sort_key: str = ""):
         """Retrieve records from a specified table/view, create a dict keyed by a given column."""
         fields_encoded = ",".join(map(urllib.parse.quote_plus, fields))
         return {
             rec[key]: rec
             for rec in self.get(
-                f"/api/v2/tables/{table}/records?offset=0&limit=1000&viewId={view}&fields={fields_encoded}")
+                f"/api/v2/tables/{table}/records?offset=0&limit=1000&viewId={view}&fields={fields_encoded}&sort={sort_key}")
         }
 
     def list_linked_records(self, table: str, link_field_id: str, record_id: int, key: str = "Id"):
@@ -90,25 +94,37 @@ class HealthDb:
 
     def today(self):
         """Compute nutrient intake for the current day."""
-        rdi = self.list_table_records(RDI_TABLE, fields=("Nutrient", "Amount"), key="Nutrient")
+        rdi = self.list_table_records(
+            RDI_TABLE,
+            fields=("Class", "Nutrient", "Amount"),
+            key="Nutrient", sort_key="-Class,-Nutrient",
+        )
         nutrients = self.list_table_records(NUTRIENTS_TABLE)
-        recipes = self.list_table_records(RECIPES_TABLE, fields=("Id", "Amount (g)", "Nutrient"))
-        ingredients = self.list_table_records(INGREDIENTS_TABLE, fields=("Id", "Amount (g)", "Ingredient"))
+        recipes = self.list_table_records(
+            RECIPES_TABLE,
+            fields=("Id", "Amount (g)", "Nutrient"),
+        )
+        ingredients = self.list_table_records(
+            INGREDIENTS_TABLE,
+            fields=("Id", "Amount (g)", "Ingredient"),
+        )
         meals = self.list_table_records(MEALS_TABLE, view=MEALS_VIEW_TODAY)
         for mealId in tuple(meal["Id"] for meal in meals.values()):
-            meals[mealId]["Ingredients"] = tuple(process_nutrients(
+            meals[mealId]["Ingredients"] = sort_by_amount(process_nutrients(
                 rdi, ingredients[k]["Amount (g)"], nutrients[ingredients[k]["Ingredient"]["Id"]]
             ) for k in self.list_linked_records(MEALS_TABLE, MEALS_LINK_INGREDIENTS, mealId).keys())
             for dish in self.list_linked_records(MEALS_TABLE, MEALS_LINK_DISHES, mealId).values():
                 meals[f"{mealId}:{dish['Id']}"] = {
                     "Meal": f"{meals[mealId]['Meal']} - {dish['Name']}",
-                    "Ingredients": tuple(process_nutrients(rdi, recipes[k]["Amount (g)"], nutrients[recipes[k]["Nutrient"]["Id"]]) for k in self.list_linked_records(DISHES_TABLE, DISHES_LINK_RECIPES, dish["Id"]).keys()),
+                    "Ingredients": sort_by_amount(process_nutrients(
+                        rdi, recipes[k]["Amount (g)"], nutrients[recipes[k]["Nutrient"]["Id"]]
+                    ) for k in self.list_linked_records(DISHES_TABLE, DISHES_LINK_RECIPES, dish["Id"]).keys()),
                 }
         table = {}
         for meal in sorted(meals.values(), key=lambda meal: meal["Meal"]):
             if meal["Ingredients"]:
                 table[meal["Meal"]] = compute_total(meal["Ingredients"])
-        return table, next(iter(meals.values()))["Date"]
+        return table, next(iter(meals.values()))["Date"], tuple(rdi.keys()) + ("Amount (g)",)
 
 
 def format_amount(amount):
@@ -122,9 +138,12 @@ def format_amount(amount):
         return ""
 
 
-def print_ingredients(meal, ingredients):
+def print_ingredients(meal, ingredients, nutrient_order):
     print(f"\n## {meal}\n")
-    keys = [k for k in ingredients[0].keys() if k not in ("Name",)]
+    keys = sorted(
+        (k for k in ingredients[0].keys() if k not in ("Name",)),
+        key=lambda k: -nutrient_order.index(k),
+    )
     padding = max(len(k) for k in keys)
     min_col_width = 14
     title = ("| " + " " * padding + " | " +
@@ -145,14 +164,14 @@ def main():
 
     total = {"Name": "Total"}
 
-    meals, date = db.today()
+    meals, date, nutrient_order = db.today()
     print(f"# {date}")
     for meal, ingredients in meals.items():
-        print_ingredients(meal, ingredients)
+        print_ingredients(meal, ingredients, nutrient_order)
 
         sum_amounts(total, (ingredient for ingredient in ingredients if ingredient["Name"] == "Total"))
 
-    print_ingredients("Total", [total])
+    print_ingredients("Total", [total], nutrient_order)
 
 
 if __name__ == "__main__":
