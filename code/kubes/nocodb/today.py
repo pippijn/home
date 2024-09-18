@@ -3,29 +3,37 @@
 import http.client
 import json
 import os
+import pprint
 import urllib.parse
 
 # Reference Daily Intake
 RDI_TABLE = "mamm9dpys1j1znw"
 
-# Ingredients (per 100g)
-INGREDIENTS_TABLE = "m0zj43gvvzeqxqz"
+# Nutrients (for ingredients per 100g)
+NUTRIENTS_TABLE = "m0zj43gvvzeqxqz"
 
-# Dishes (ingredients, but in actual weight when put on a plate)
-DISHES_TABLE = "m5ddsw6b8q0jn55"
+# Ingredients (ingredients, but in actual weight when put on a plate)
+INGREDIENTS_TABLE = "m5ddsw6b8q0jn55"
 
-# Meals (dated collections of dishes)
+# Dishes (collections of weighted ingredients from Recipes)
+DISHES_TABLE = "mtmdui21lnhz8wq"
+DISHES_LINK_RECIPES = "c86u2iy3l11rm40"
+
+# Recipes (amounts of ingredients for a given dish)
+RECIPES_TABLE = "mzritn6zi79bir9"
+
+# Meals (dated collections of ingredients)
 MEALS_TABLE = "mohjrlr1l7et77g"
 MEALS_VIEW_TODAY = "vwpckbejvg1mbifx"
-MEALS_LINK_DISHES = "cc9wqhoe8nfb18o"
+MEALS_LINK_INGREDIENTS = "cc9wqhoe8nfb18o"
+MEALS_LINK_DISHES = "c055jl2zkxeup5z"
 
 
-def process_nutrients(rdi, ingredient):
+def process_nutrients(rdi, ingredient_amount, ingredient):
     """Compute all nutrients for an ingredient based on the amount."""
     nutrients = {}
-    ingredient_amount = ingredient["Amount (g)"]
     for k, v in ingredient.items():
-        if v is None or k in ("Amount (g)", "Name"):
+        if v is None or k == "Name":
             nutrients[k] = v
         elif k in rdi:
             amount = v / 100 * ingredient_amount
@@ -33,10 +41,10 @@ def process_nutrients(rdi, ingredient):
     return nutrients
 
 
-def sum_amounts(total, dishes):
+def sum_amounts(total, ingredients):
     """Sum up all the amounts and RDI values of all nutrients to a total."""
-    for dish in dishes:
-        for k, v in dish.items():
+    for ingredient in ingredients:
+        for k, v in ingredient.items():
             if isinstance(v, dict):
                 if k not in total:
                     total[k] = {"Amount": 0, "RDI": 0}
@@ -44,11 +52,11 @@ def sum_amounts(total, dishes):
                 total[k]["RDI"] += v["RDI"]
 
 
-def compute_total(dishes):
-    """Create a new Total dish and add it to the end of the dishes."""
+def compute_total(ingredients):
+    """Create a new Total ingredient and add it to the end of the ingredients."""
     total = {"Name": "Total", "Amount (g)": None}
-    sum_amounts(total, dishes)
-    return dishes + (total,)
+    sum_amounts(total, ingredients)
+    return ingredients + (total,)
 
 
 class HealthDb:
@@ -83,17 +91,23 @@ class HealthDb:
     def today(self):
         """Compute nutrient intake for the current day."""
         rdi = self.list_table_records(RDI_TABLE, fields=("Nutrient", "Amount"), key="Nutrient")
-        ingredients = self.list_table_records(INGREDIENTS_TABLE)
-        dishes = self.list_table_records(DISHES_TABLE, fields=("Id", "Amount (g)", "Ingredient"))
+        nutrients = self.list_table_records(NUTRIENTS_TABLE)
+        recipes = self.list_table_records(RECIPES_TABLE, fields=("Id", "Amount (g)", "Nutrient"))
+        ingredients = self.list_table_records(INGREDIENTS_TABLE, fields=("Id", "Amount (g)", "Ingredient"))
         meals = self.list_table_records(MEALS_TABLE, view=MEALS_VIEW_TODAY)
         for mealId in tuple(meal["Id"] for meal in meals.values()):
-            meals[mealId]["Dishes"] = tuple(process_nutrients(rdi, {
-                "Amount (g)": dishes[k]["Amount (g)"],
-                **ingredients[dishes[k]["Ingredient"]["Id"]]
-            }) for k in self.list_linked_records(MEALS_TABLE, MEALS_LINK_DISHES, mealId).keys())
+            meals[mealId]["Ingredients"] = tuple(process_nutrients(
+                rdi, ingredients[k]["Amount (g)"], nutrients[ingredients[k]["Ingredient"]["Id"]]
+            ) for k in self.list_linked_records(MEALS_TABLE, MEALS_LINK_INGREDIENTS, mealId).keys())
+            for dish in self.list_linked_records(MEALS_TABLE, MEALS_LINK_DISHES, mealId).values():
+                meals[f"{mealId}:{dish['Id']}"] = {
+                    "Meal": f"{meals[mealId]['Meal']} - {dish['Name']}",
+                    "Ingredients": tuple(process_nutrients(rdi, recipes[k]["Amount (g)"], nutrients[recipes[k]["Nutrient"]["Id"]]) for k in self.list_linked_records(DISHES_TABLE, DISHES_LINK_RECIPES, dish["Id"]).keys()),
+                }
         table = {}
-        for meal in meals.values():
-            table[meal["Meal"]] = compute_total(meal["Dishes"])
+        for meal in sorted(meals.values(), key=lambda meal: meal["Meal"]):
+            if meal["Ingredients"]:
+                table[meal["Meal"]] = compute_total(meal["Ingredients"])
         return table, next(iter(meals.values()))["Date"]
 
 
@@ -108,22 +122,22 @@ def format_amount(amount):
         return ""
 
 
-def print_dishes(meal, dishes):
+def print_ingredients(meal, ingredients):
     print(f"\n## {meal}\n")
-    keys = [k for k in dishes[0].keys() if k not in ("Name",)]
+    keys = [k for k in ingredients[0].keys() if k not in ("Name",)]
     padding = max(len(k) for k in keys)
     min_col_width = 14
     title = ("| " + " " * padding + " | " +
-             " | ".join(f"{dish['Name']:{min_col_width}}"
-                        for dish in dishes))
+             " | ".join(f"{ingredient['Name']:{min_col_width}}"
+                        for ingredient in ingredients))
     print(title)
     print("| :" + "-" * (padding - 1) + " | " +
-          " | ".join("-" * (max(len(dish["Name"]), min_col_width) - 1) + ":"
-                     for dish in dishes))
+          " | ".join("-" * (max(len(ingredient["Name"]), min_col_width) - 1) + ":"
+                     for ingredient in ingredients))
     for k in keys:
         print(f"| {k:{padding}} | " +
-              " | ".join(f"{format_amount(dish.get(k, None)):{max(len(dish['Name']), min_col_width)}}"
-                         for dish in dishes))
+              " | ".join(f"{format_amount(ingredient.get(k, None)):{max(len(ingredient['Name']), min_col_width)}}"
+                         for ingredient in ingredients))
 
 
 def main():
@@ -133,12 +147,12 @@ def main():
 
     meals, date = db.today()
     print(f"# {date}")
-    for meal, dishes in meals.items():
-        print_dishes(meal, dishes)
+    for meal, ingredients in meals.items():
+        print_ingredients(meal, ingredients)
 
-        sum_amounts(total, (dish for dish in dishes if dish["Name"] == "Total"))
+        sum_amounts(total, (ingredient for ingredient in ingredients if ingredient["Name"] == "Total"))
 
-    print_dishes("Total", [total])
+    print_ingredients("Total", [total])
 
 
 if __name__ == "__main__":
