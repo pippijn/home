@@ -31,7 +31,7 @@ MEALS_LINK_DISHES = "c055jl2zkxeup5z"
 
 def process_nutrients(rdi, ingredient_amount, ingredient):
     """Compute all nutrients for an ingredient based on the amount."""
-    nutrients = {}
+    nutrients = {"Amount (g)": ingredient_amount}
     for k, v in ingredient.items():
         if v is None or k == "Name":
             nutrients[k] = v
