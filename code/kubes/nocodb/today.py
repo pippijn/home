@@ -138,11 +138,17 @@ def format_amount(amount):
         return ""
 
 
-def print_ingredients(meal, ingredients, nutrient_order):
+def nutrient_order(nutrient_names, k):
+    if k not in nutrient_names:
+        raise ValueError(f"`{k}` not in nutrient names")
+    return -nutrient_names.index(k)
+
+
+def print_ingredients(meal, ingredients, nutrient_names):
     print(f"\n## {meal}\n")
     keys = sorted(
-        (k for k in ingredients[0].keys() if k not in ("Name",)),
-        key=lambda k: -nutrient_order.index(k),
+        (k for k in ingredients[0].keys() if k not in ("Name", "UpdatedAt")),
+        key=lambda k: nutrient_order(nutrient_names, k),
     )
     padding = max(len(k) for k in keys)
     min_col_width = 14
@@ -164,14 +170,14 @@ def main():
 
     total = {"Name": "Total"}
 
-    meals, date, nutrient_order = db.today()
+    meals, date, nutrient_names = db.today()
     print(f"# {date}")
     for meal, ingredients in meals.items():
-        print_ingredients(meal, ingredients, nutrient_order)
+        print_ingredients(meal, ingredients, nutrient_names)
 
         sum_amounts(total, (ingredient for ingredient in ingredients if ingredient["Name"] == "Total"))
 
-    print_ingredients("Total", [total], nutrient_order)
+    print_ingredients("Total", [total], nutrient_names)
 
 
 if __name__ == "__main__":
