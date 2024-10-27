@@ -14,11 +14,19 @@ spec:
       labels:
         run: httpd-amun
     spec:
+      volumes:
+      - name: assetlinks-config-volume
+        configMap:
+          name: assetlinks-config
       containers:
       - name: httpd-amun
         image: nginx
         ports:
         - containerPort: 80
+        volumeMounts:
+        - name: assetlinks-config-volume
+          mountPath: /usr/share/nginx/html/.well-known/assetlinks.json
+          subPath: assetlinks.json
 ---
 apiVersion: v1
 kind: Service

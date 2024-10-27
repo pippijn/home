@@ -144,8 +144,7 @@ def nutrient_order(nutrient_names, k):
     return -nutrient_names.index(k)
 
 
-def print_ingredients(meal, ingredients, nutrient_names):
-    print(f"\n## {meal}\n")
+def print_ingredients(ingredients, nutrient_names):
     keys = sorted(
         (k for k in ingredients[0].keys() if k not in ("Name", "UpdatedAt")),
         key=lambda k: nutrient_order(nutrient_names, k),
@@ -173,11 +172,13 @@ def main():
     meals, date, nutrient_names = db.today()
     print(f"# {date}")
     for meal, ingredients in meals.items():
-        print_ingredients(meal, ingredients, nutrient_names)
+        print(f"\n## {meal}\n")
+        print_ingredients(ingredients, nutrient_names)
 
         sum_amounts(total, (ingredient for ingredient in ingredients if ingredient["Name"] == "Total"))
 
-    print_ingredients("Total", [total], nutrient_names)
+    print(f"\n## Total\n")
+    print_ingredients([total], nutrient_names)
 
 
 if __name__ == "__main__":
