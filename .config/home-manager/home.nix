@@ -142,7 +142,9 @@ in {
   programs.zsh = {
     enable = true;
     autocd = true;
-    enableSyntaxHighlighting = true;
+    syntaxHighlighting = {
+      enable = true;
+    };
 
     initExtra = ''
       unsetopt beep                   # don't beep, ever
