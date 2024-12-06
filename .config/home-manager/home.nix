@@ -46,7 +46,7 @@ in {
   services.gpg-agent.enable = true;
 
   services.unison = {
-    enable = true;
+    enable = false;
 
     pairs = if isMaster then {
 #     picade = {

@@ -8,6 +8,7 @@
 /.python_history
 /.unison
 /.viminfo
+/.vscode-*
 /.zcompdump*
 /.zshenv
 /.zshrc
