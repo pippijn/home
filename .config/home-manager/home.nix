@@ -91,7 +91,7 @@ in {
 
       toktok = {
         user = "builder";
-        hostname = "isis";
+        hostname = "amun";
         port = 2223;
         extraOptions = {
           LogLevel = "QUIET";
@@ -102,7 +102,7 @@ in {
 
       toktok-dev = {
         user = "builder";
-        hostname = "isis";
+        hostname = "amun";
         port = 2224;
         extraOptions = {
           LogLevel = "QUIET";
