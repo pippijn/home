@@ -57,7 +57,7 @@ spec:
 #  annotations:
 #    metallb.universe.tf/allow-shared-ip: xinutec
 #spec:
-#  type: HostPort
+#  type: ClusterIP
 #  # Ensure that the ircd gets the actual client IP, not the load balancer IP.
 #  # externalTrafficPolicy: Local
 #  selector:

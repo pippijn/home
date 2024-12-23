@@ -13,4 +13,5 @@ sudo kubectl get secret -n ircd irc-tls -o json | jq -r '.data."tls.key"' | base
 
 # Copy the certs into the container and REHASH.
 sudo kubectl cp inspircd/conf/$HOST/secret "ircd/$POD:/etc/inspircd/conf/"
+sudo kubectl cp permchannels.conf "ircd/$POD:/etc/inspircd/data/"
 sudo kubectl exec --stdin --tty -n ircd "pod/$POD" -- /bin/bash -c 'kill -HUP 1'
