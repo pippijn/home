@@ -7,3 +7,4 @@ sudo helm upgrade --install \
   --version v1.16.2 \
   --set crds.enabled=true \
   --set prometheus.enabled=false
+sudo kubectl apply -f .
