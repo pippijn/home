@@ -14,25 +14,14 @@ metadata:
   namespace: ircd
   name: irc-ingress
   annotations:
-    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    cert-manager.io/cluster-issuer: "letsencrypt-staging"
 spec:
   ingressClassName: nginx
   tls:
   - hosts:
-    - xinutec.org
     - irc.xinutec.net
     secretName: irc-tls
   rules:
-  - host: xinutec.org
-    http:
-      paths:
-      - path: /barfooze #/.well-known
-        pathType: Prefix
-        backend:
-          service:
-            name: certbot-forward
-            port:
-              number:  80
   - host: irc.xinutec.net
     http:
       paths:
