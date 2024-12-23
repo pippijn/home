@@ -5,4 +5,5 @@ sudo helm upgrade --install \
   --namespace cert-manager \
   --create-namespace \
   --version v1.16.2 \
-  --set crds.enabled=true
+  --set crds.enabled=true \
+  --set prometheus.enabled=false
