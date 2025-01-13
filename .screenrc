@@ -195,7 +195,7 @@ screen -t 'top-amun' -ln 1 ssh amun -t top
 screen -t 'top-isis' -ln 2 ssh isis -t top
 screen -t 'dmesg-amun' -ln 3 ssh amun -t dmesg -w
 screen -t 'dmesg-isis' -ln 4 ssh isis -t dmesg -w
-screen -t 'hermes' -ln 5 ssh hermes -t screen -dr
+screen -t 'hermes' -ln 5 ssh hermes.vpn -t screen -dr
 
 deflogin off
 
